@@ -1,7 +1,17 @@
 import React, { useEffect, useState } from "react";
 
 interface props {
-  countryInfo: Object;
+  countryInfo: {
+    name: {
+      common: string;
+      official?: string;
+      nativeName?: string;
+    };
+    population: string;
+    region: string;
+    capital: string[];
+    flags: { alt: string; png: string; svg: string };
+  };
 }
 
 const SingleCountry: React.FC<props> = ({ countryInfo }) => {
@@ -24,7 +34,7 @@ const SingleCountry: React.FC<props> = ({ countryInfo }) => {
             Region : <span className="font-normal">{region}</span>
           </h3>
           <h3 className="font-semibold">
-            Capital : <span className="font-normal">{capital}</span>
+            Capital : <span className="font-normal">{capital[0]}</span>
           </h3>
         </div>
       </div>
