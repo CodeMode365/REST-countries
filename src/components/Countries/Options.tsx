@@ -1,4 +1,5 @@
 import React from "react";
+import { AiOutlineDown } from "react-icons/ai";
 
 interface iProps {
   setFilterOption: React.Dispatch<
@@ -16,26 +17,11 @@ const Options: React.FC<iProps> = ({ setFilterOption }) => {
       <button
         id="dropdownDefaultButton"
         data-dropdown-toggle="dropdown"
-        className="focus:ring-2 focus:outline-none font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center outline-0"
+        className="focus:ring-2 focus:outline-none font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center "
         type="button"
         onClick={() => setShowMenu(!showMenu)}
       >
-        Filter Region{" "}
-        <svg
-          className="w-4 h-4 ml-2"
-          aria-hidden="true"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M19 9l-7 7-7-7"
-          ></path>
-        </svg>
+        Filter Region <AiOutlineDown />
       </button>
       {/* <!-- Dropdown menu --> */}
       <div
