@@ -35,7 +35,10 @@ const Country = () => {
   }, []);
 
   return (
-    <main className="w-full  dark:bg-darkBg dark:text-darkText">
+    <main
+      className="w-full  dark:bg-darkBg dark:text-darkText"
+      style={{ minHeight: "calc(100vh - 56px)" }}
+    >
       <button className="m-4 border dark:border-darkText px-6 py-1 rounded-md dark:hover:bg-lightBg dark:hover:text-lightText transition-colors	delay-150">
         <Link to="/">Back</Link>
       </button>
