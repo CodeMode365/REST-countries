@@ -2,7 +2,7 @@ import React, { lazy, useEffect, useState } from "react";
 import Options from "./Options";
 import SearchBar from "./SearchBar";
 import InfiniteScroll from "react-infinite-scroll-component";
-import FetchData from "./FetchData";
+import FetchData from "../FetchData";
 import { Link } from "react-router-dom";
 
 const LazyCountry = lazy(() => import("./SingleCountry"));
@@ -33,11 +33,9 @@ const Countries: React.FC = (): JSX.Element => {
 
     const result = await FetchData({
       slug: "all?fields=name,flags,population,region,capital,flags",
-      start: start,
-      end: end,
     });
-    if (data) setData(data?.concat(result));
-    else setData(result);
+    if (data) setData(data?.concat(result.splice(start,end)));
+    else setData(result.splice(start,end));
   };
 
   useEffect(() => {
