@@ -43,7 +43,7 @@ const Country = () => {
         <Link to="/">Back</Link>
       </button>
 
-      <div className="container w-full flex flex-col lg:flex-row items-center justify-center gap-10  p-5 ">
+      <div className="container w-full flex flex-col lg:flex-row items-center justify-center gap-10  p-5 lg:p-40">
         <div className="flag" style={{ maxWidth: "400px" }}>
           <img src={data?.flags.svg} alt={""} />
         </div>
@@ -51,39 +51,39 @@ const Country = () => {
           <h1 className="text-2xl text-bolder">{country}</h1>
           <div className="cols grid grid-cols-2 mt-3 gap-10">
             <div className="col-1">
-              <h3 className="font-semibold">
+              <h3 className="font-semibold lg:text-lg text-md mb-2">
                 Native Name :{" "}
                 <span className="font-normal">{data?.name.common}</span>
               </h3>
-              <h3 className="font-semibold">
+              <h3 className="font-semibold  lg:text-lg text-md mb-2">
                 Population :{" "}
                 <span className="font-normal">{data?.population}</span>
               </h3>
-              <h3 className="font-semibold">
+              <h3 className="font-semibold  lg:text-lg text-md mb-2">
                 Region : <span className="font-normal">{data?.region}</span>
               </h3>
-              <h3 className="font-semibold">
+              <h3 className="font-semibold  lg:text-lg text-md mb-2">
                 Sub Region :{" "}
                 <span className="font-normal">{data?.subregion}</span>
               </h3>
-              <h3 className="font-semibold">
+              <h3 className="font-semibold  lg:text-lg text-md mb-2">
                 Capital : <span className="font-normal">{data?.capital}</span>
               </h3>
             </div>
-            <div className="col-2">
-              <h3 className="font-semibold">
+            <div className="col-2  ">
+              <h3 className="font-semibold lg:text-lg text-md mb-2">
                 Top Lvel Domain :{" "}
                 <span className="font-normal">{data?.tld.join(" , ")}</span>
               </h3>
-              <h3 className="font-semibold">
+              <h3 className="font-semibold lg:text-lg text-md mb-2">
                 Currencies :{" "}
                 <span className="font-normal">
                   {data ? Object.keys(data.currencies).join(" , ") : ""}
                 </span>
               </h3>
-              <h3 className="font-semibold">
+              <h3 className="font-semibold lg:text-lg text-md mb-2">
                 Languages :{" "}
-                <span className="font-normal">
+                <span className="font-normal lg:text-lg text-md mb-2">
                   {data ? Object.values(data.languages).join(" , ") : " "}
                 </span>
               </h3>
