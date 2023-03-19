@@ -1,8 +1,8 @@
 import React, { lazy, useEffect, useState } from "react";
-import axios from "axios";
-import Data from "../data.json";
 import Options from "./Options";
 import SearchBar from "./SearchBar";
+import InfiniteScroll from "react-infinite-scroll-component";
+import FetchData from "./FetchData";
 
 const LazyCountry = lazy(() => import("./SingleCountry"));
 
@@ -19,15 +19,36 @@ interface iData {
 }
 
 const Countries: React.FC = (): JSX.Element => {
-  const [data, setData] = useState<iData[] | null>();
+  const [data, setData] = useState<iData[] | void>();
   useEffect(() => {
-    axios
-      .get(
-        "https://restcountries.com/v3.1/all?fields=name,flags,population,region,capital,flags"
-      )
-      .then((res) => setData(res.data))
-      .catch((err: Error) => console.log(err.message));
+    const fetchInitialData = async () => {
+      try {
+        const result = await FetchData({
+          slug: "all?fields=name,flags,population,region,capital,flags",
+          start: 0,
+          end: 8,
+        });
+        setData(result);
+      } catch (err: any) {
+        console.log(err.message);
+      }
+    };
+    fetchInitialData();
   }, []);
+
+  const fetchMoreData = async () => {
+    const start = data ? data?.length + 1 : 0;
+    const end = data ? data?.length + 8 : 8;
+
+    const result = await FetchData({
+      slug: "all?fields=name,flags,population,region,capital,flags",
+      start: start,
+      end: end,
+    });
+    data?.concat(result);
+    setData(data?.concat(result));
+  };
+
   return (
     <main className="w-full h-full bg-lightBg dark:bg-darkBg dark:text-darkText">
       <div className="wrapper w-11/12 mx-auto pt-10">
@@ -37,17 +58,21 @@ const Countries: React.FC = (): JSX.Element => {
             <Options />
           </div>
         </div>
-        <div className="countries mt-10 flex flex-row flex-wrap justify-center">
-          {data ? (
-            [...data].map(
+
+        <InfiniteScroll
+          dataLength={data ? data.length : 0}
+          next={() => fetchMoreData()}
+          hasMore={true}
+          loader={<h2 className="text-center mb-4">Loading...</h2>}
+        >
+          <div className="countries mt-10 flex flex-row flex-wrap justify-center">
+            {data?(data!.map(
               (countryInfo, index: number): JSX.Element => (
                 <LazyCountry countryInfo={countryInfo} key={index} />
               )
-            )
-          ) : (
-            <h2>Loading...</h2>
-          )}
-        </div>
+            )):"Please wait"}
+          </div>
+        </InfiniteScroll>
       </div>
     </main>
   );
