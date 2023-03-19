@@ -1,17 +1,26 @@
 import React from "react";
 
-const Options = () => {
+interface iProps {
+  setFilterOption: React.Dispatch<
+    React.SetStateAction<string | null | undefined>
+  >;
+}
+
+const Options: React.FC<iProps> = ({ setFilterOption }) => {
   const [showMenu, setShowMenu] = React.useState<boolean>(false);
+
+  const Regions: string[] = ["Africa", "America", "Asia", "Europe", "Ocenia"];
+
   return (
     <>
       <button
         id="dropdownDefaultButton"
         data-dropdown-toggle="dropdown"
-        className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        className="focus:ring-2 focus:outline-none font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center outline-0"
         type="button"
         onClick={() => setShowMenu(!showMenu)}
       >
-        Dropdown button{" "}
+        Filter Region{" "}
         <svg
           className="w-4 h-4 ml-2"
           aria-hidden="true"
@@ -34,27 +43,17 @@ const Options = () => {
           showMenu ? "" : "hidden"
         }`}
       >
-        <ul className="py-2 text-sm text-gray-700 bg-lightBg text-lightText dark:text-gray-200">
-          <li>
-            <button className="block hover:text-lightBg px-4 py-2 w-full text-left hover:bg-darkEle dark:hover:bg-lightInput dark:hover:text-lightEle">
-              Dashboard
-            </button>
-          </li>
-          <li>
-            <button className="block hover:text-lightBg px-4 py-2 w-full text-left hover:bg-darkEle dark:hover:bg-lightInput dark:hover:text-white">
-              Settings
-            </button>
-          </li>
-          <li>
-            <button className="block hover:text-lightBg px-4 py-2 w-full text-left hover:bg-darkEle dark:hover:bg-lightInput dark:hover:text-white">
-              Earnings
-            </button>
-          </li>
-          <li>
-            <button className="block hover:text-lightBg px-4 py-2 w-full text-left hover:bg-darkEle dark:hover:bg-lightInput dark:hover:text-white">
-              Sign out
-            </button>
-          </li>
+        <ul className="py-2 text-sm  bg-lightBg text-lightText ">
+          {Regions.map((region: string, index: number) => (
+            <li key={region + index}>
+              <button
+                className="block outline-0 hover:text-lightBg px-4 py-2 w-full text-left hover:bg-darkEle dark:hover:bg-lightInput dark:hover:text-lightEle"
+                onClick={() => setFilterOption(region)}
+              >
+                {region}
+              </button>
+            </li>
+          ))}
         </ul>
       </div>
     </>

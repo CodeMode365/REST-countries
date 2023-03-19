@@ -3,6 +3,7 @@ import Options from "./Options";
 import SearchBar from "./SearchBar";
 import InfiniteScroll from "react-infinite-scroll-component";
 import FetchData from "./FetchData";
+import { Link } from "react-router-dom";
 
 const LazyCountry = lazy(() => import("./SingleCountry"));
 
@@ -19,25 +20,11 @@ interface iData {
 }
 
 const Countries: React.FC = (): JSX.Element => {
-  const [data, setData] = useState<iData[] | void>();
+  const [data, setData] = useState<iData[] | null>();
   const [hasMore, setHasMore] = useState<boolean>(true);
-  useEffect(() => {
-    const fetchInitialData = async () => {
-      try {
-        const result = await FetchData({
-          slug: "all?fields=name,flags,population,region,capital,flags",
-          start: 0,
-          end: 8,
-        });
-        setData(result);
-      } catch (err: any) {
-        console.log(err.message);
-      }
-    };
-    fetchInitialData();
-  }, []);
+  const [filterOption, setFilterOption] = useState<string | null>();
 
-  const fetchMoreData = async () => {
+  const fetchMoreData = async (): Promise<void> => {
     const start = data ? data?.length + 1 : 0;
     const end = data ? data?.length + 8 : 8;
     if (data) {
@@ -49,9 +36,13 @@ const Countries: React.FC = (): JSX.Element => {
       start: start,
       end: end,
     });
-    data?.concat(result);
-    setData(data?.concat(result));
+    if (data) setData(data?.concat(result));
+    else setData(result);
   };
+
+  useEffect(() => {
+    fetchMoreData();
+  }, []);
 
   return (
     <main className="w-full h-full bg-lightBg dark:bg-darkBg dark:text-darkText">
@@ -59,7 +50,7 @@ const Countries: React.FC = (): JSX.Element => {
         <div className="bar flex items-center justify-between ">
           <SearchBar />
           <div className="options realtive">
-            <Options />
+            <Options setFilterOption={setFilterOption} />
           </div>
         </div>
 
@@ -68,13 +59,15 @@ const Countries: React.FC = (): JSX.Element => {
           next={() => fetchMoreData()}
           hasMore={hasMore}
           loader={<h2 className="text-center mb-4">Loading...</h2>}
-          endMessage ={<h2 className="text-center mb-4">No more countries</h2>}
+          endMessage={<h2 className="text-center mb-4">No more countries</h2>}
         >
           <div className="countries mt-10 flex flex-row flex-wrap justify-center">
             {data
               ? data!.map(
                   (countryInfo, index: number): JSX.Element => (
-                    <LazyCountry countryInfo={countryInfo} key={index} />
+                    <Link to={`/${countryInfo.name.common}`} key={index}>
+                      <LazyCountry countryInfo={countryInfo} />
+                    </Link>
                   )
                 )
               : "Please wait"}
