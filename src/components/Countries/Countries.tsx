@@ -20,6 +20,7 @@ interface iData {
 
 const Countries: React.FC = (): JSX.Element => {
   const [data, setData] = useState<iData[] | void>();
+  const [hasMore, setHasMore] = useState<boolean>(true);
   useEffect(() => {
     const fetchInitialData = async () => {
       try {
@@ -39,6 +40,9 @@ const Countries: React.FC = (): JSX.Element => {
   const fetchMoreData = async () => {
     const start = data ? data?.length + 1 : 0;
     const end = data ? data?.length + 8 : 8;
+    if (data) {
+      if (data.length >= 202) setHasMore(false);
+    }
 
     const result = await FetchData({
       slug: "all?fields=name,flags,population,region,capital,flags",
@@ -62,15 +66,18 @@ const Countries: React.FC = (): JSX.Element => {
         <InfiniteScroll
           dataLength={data ? data.length : 0}
           next={() => fetchMoreData()}
-          hasMore={true}
+          hasMore={hasMore}
           loader={<h2 className="text-center mb-4">Loading...</h2>}
+          endMessage ={<h2 className="text-center mb-4">No more countries</h2>}
         >
           <div className="countries mt-10 flex flex-row flex-wrap justify-center">
-            {data?(data!.map(
-              (countryInfo, index: number): JSX.Element => (
-                <LazyCountry countryInfo={countryInfo} key={index} />
-              )
-            )):"Please wait"}
+            {data
+              ? data!.map(
+                  (countryInfo, index: number): JSX.Element => (
+                    <LazyCountry countryInfo={countryInfo} key={index} />
+                  )
+                )
+              : "Please wait"}
           </div>
         </InfiniteScroll>
       </div>
