@@ -22,20 +22,33 @@ interface iData {
 const Countries: React.FC = (): JSX.Element => {
   const [data, setData] = useState<iData[] | null>();
   const [hasMore, setHasMore] = useState<boolean>(true);
-  const [filterOption, setFilterOption] = useState<string | null>();
+  const [Slug, setSlug] = useState<string>(
+    "all?fields=name,flags,population,region,capital,flags"
+  );
 
   const fetchMoreData = async (): Promise<void> => {
     const start = data ? data?.length + 1 : 0;
     const end = data ? data?.length + 8 : 8;
-    if (data) {
-      if (data.length >= 202) setHasMore(false);
-    }
 
     const result = await FetchData({
-      slug: "all?fields=name,flags,population,region,capital,flags",
+      slug: Slug,
     });
-    if (data) setData(data?.concat(result.splice(start,end)));
-    else setData(result.splice(start,end));
+
+    if (data) setData(data?.concat(result.splice(start, end)));
+    else setData(result.splice(start, end));
+
+    if (data) {
+      if (data.length + 1 >= result.length) setHasMore(false);
+      else setHasMore(true);
+    }
+  };
+
+  const fetchByRegion = async (region: string): Promise<void> => {
+    if (data) {
+      data.length = 0;
+    }
+    setSlug(`region/${region}`);
+    await fetchMoreData();
   };
 
   useEffect(() => {
@@ -43,12 +56,15 @@ const Countries: React.FC = (): JSX.Element => {
   }, []);
 
   return (
-    <main className="w-full h-full bg-lightBg dark:bg-darkBg dark:text-darkText">
+    <main
+      className="w-full h-full bg-lightBg dark:bg-darkBg dark:text-darkText "
+      style={{ minHeight: "calc(100vh - 56px)" }}
+    >
       <div className="wrapper w-11/12 mx-auto pt-10">
         <div className="bar flex items-center justify-between ">
           <SearchBar />
           <div className="options realtive">
-            <Options setFilterOption={setFilterOption} />
+            <Options fetchByRegion={fetchByRegion} />
           </div>
         </div>
 

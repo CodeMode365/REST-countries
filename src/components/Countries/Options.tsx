@@ -2,15 +2,13 @@ import React from "react";
 import { AiOutlineDown } from "react-icons/ai";
 
 interface iProps {
-  setFilterOption: React.Dispatch<
-    React.SetStateAction<string | null | undefined>
-  >;
+  fetchByRegion: (slug: string) => void;
 }
 
-const Options: React.FC<iProps> = ({ setFilterOption }) => {
+const Options: React.FC<iProps> = ({ fetchByRegion }) => {
   const [showMenu, setShowMenu] = React.useState<boolean>(false);
 
-  const Regions: string[] = ["Africa", "America", "Asia", "Europe", "Ocenia"];
+  const Regions: string[] = ["Africa", "America", "Asia", "Europe", "Oceania"];
 
   return (
     <>
@@ -34,7 +32,7 @@ const Options: React.FC<iProps> = ({ setFilterOption }) => {
             <li key={region + index}>
               <button
                 className="block outline-0 hover:text-lightBg px-4 py-2 w-full text-left hover:bg-darkEle dark:hover:bg-lightInput dark:hover:text-lightEle"
-                onClick={() => setFilterOption(region)}
+                onClick={() => fetchByRegion(region)}
               >
                 {region}
               </button>
