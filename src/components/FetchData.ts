@@ -21,7 +21,7 @@ const FetchData = async ({
     const { data } = await axios.get(`https://restcountries.com/v3.1/${slug}`);
     return data;
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
