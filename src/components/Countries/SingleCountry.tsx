@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 interface props {
   countryInfo: {
@@ -34,7 +34,7 @@ const SingleCountry: React.FC<props> = ({ countryInfo }) => {
             Region : <span className="font-normal">{region}</span>
           </h3>
           <h3 className="font-semibold">
-            Capital : <span className="font-normal">{capital[0]}</span>
+            Capital : <span className="font-normal">{capital}</span>
           </h3>
         </div>
       </div>
