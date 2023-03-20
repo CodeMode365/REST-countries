@@ -90,11 +90,20 @@ const Country = () => {
             </div>
           </div>
           <h3 className="font-semibold text-center w-full dark:bg-darkBg">
-            Border Countries :
-            <span className="font-normal">
-              {" "}
-              {data ? data.borders.join(" , ") : "null"}
-            </span>
+            Border Countries :{/* <span className="font-normal"> */}{" "}
+            {data
+              ? data.borders.map((item) => {
+                  return (
+                    <button
+                      key={item}
+                      className="border mx-2 px-3 hover:bg-darkBg hover:text-darkText dark:hover:bg-lightBg dark:hover:text-lightText rounded dark:bg-darkBg dark:text-darkText transition-colors mb-3"
+                    >
+                      {item}
+                    </button>
+                  );
+                })
+              : "null"}
+            {/* </span> */}
           </h3>
         </div>
       </div>
