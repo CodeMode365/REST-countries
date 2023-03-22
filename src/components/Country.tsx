@@ -48,7 +48,7 @@ const Country = () => {
           <img src={data?.flags.svg} alt={""} />
         </div>
         <div className="details mt-5">
-          <h1 className="text-2xl text-bolder">{country}</h1>
+          <h1 className="text-2xl text-bolder">{data?.name.common}</h1>
           <div className="cols grid grid-cols-2 mt-3 gap-10">
             <div className="col-1">
               <h3 className="font-semibold lg:text-lg text-md mb-2">

@@ -4,6 +4,7 @@ import SearchBar from "./SearchBar";
 import InfiniteScroll from "react-infinite-scroll-component";
 import FetchData from "../FetchData";
 import { Link } from "react-router-dom";
+import Slug_Option from "./Slug_option";
 
 const LazyCountry = lazy(() => import("./SingleCountry"));
 
@@ -22,9 +23,7 @@ interface iData {
 const Countries: React.FC = (): JSX.Element => {
   const [data, setData] = useState<iData[] | null>();
   const [hasMore, setHasMore] = useState<boolean>(true);
-  const [Slug, setSlug] = useState<string>(
-    "all?fields=name,flags,population,region,capital,flags"
-  );
+  const [Slug, setSlug] = useState<string>(Slug_Option.all);
 
   const fetchMoreData = async (): Promise<void> => {
     const start = data ? data?.length + 1 : 0;
@@ -47,7 +46,15 @@ const Countries: React.FC = (): JSX.Element => {
     if (data) {
       data.length = 0;
     }
-    setSlug(`region/${region}`);
+    setSlug(Slug_Option.region + region);
+    await fetchMoreData();
+  };
+
+  const fetchByName = async (name: string): Promise<void> => {
+    if (data) {
+      data.length = 0;
+    }
+    setSlug(Slug_Option.name + name);
     await fetchMoreData();
   };
 
@@ -62,7 +69,7 @@ const Countries: React.FC = (): JSX.Element => {
     >
       <div className="wrapper w-11/12 mx-auto pt-10">
         <div className="bar flex items-center justify-between ">
-          <SearchBar />
+          <SearchBar fetchByName={fetchByName} />
           <div className="options realtive">
             <Options fetchByRegion={fetchByRegion} />
           </div>

@@ -1,10 +1,18 @@
-import React, { FormEvent } from "react";
+import React, { FormEvent, useState } from "react";
 import { BsSearch } from "react-icons/bs";
 
-const SearchBar = () => {
+interface iProps {
+  fetchByName: (name:string) => Promise<void>;
+}
+
+const SearchBar: React.FC<iProps> = ({ fetchByName }) => {
+  const [search, setSearch] = useState("");
+
   const handleSubmit = (e: FormEvent): void => {
     e.preventDefault();
+    fetchByName(search)
   };
+
   return (
     <form onSubmit={(e) => handleSubmit(e)}>
       <label
@@ -18,6 +26,8 @@ const SearchBar = () => {
           <BsSearch />
         </div>
         <input
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
           type="search"
           id="search"
           className="block w-full p-4 pl-10 text-sm text-lightText border  rounded-lg  "
